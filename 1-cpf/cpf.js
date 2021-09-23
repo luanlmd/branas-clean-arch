@@ -1,49 +1,33 @@
-const validate = (str) => {
-    if (!str) { return false }
-    str = str.replace(/[^0-9]/g, '')
-    if (str.length != 11) { return false }
-    if (str.split("").every(c => c === str[0])) { return false }
+const calculateVeryfyingDigit = (cpf, digit) => {
+    const multiplierStart = (digit === 1)? 10 : 11;
+    const calculateUntil = (digit === 1)? 9 : 10;
 
-    let d2, dg1, dg2;
-    d2 = dg1 = dg2 = 0;
+    let accumulatedDigit = 0;
+    let multiplier = multiplierStart;
+    for (let index = 0; index < calculateUntil; index++, multiplier--) {
+        const digit = cpf[index];
+        accumulatedDigit += ( multiplier * digit );
+    }
 
-    console.log(str.substring(0, str.length - 2).split('').map((value) => parseInt(value)));
+    const rest = ((accumulatedDigit * 10) % 11);
+    return (rest < 10) ? rest : 0;
+}
 
-    let d1 = str.padStart(1, '0').substring(0, str.length - 2).split('').map((value) => parseInt(value)).reduce((acumulator, currentValue, index) => {
-        console.log('reduce', 10 - index - 1, currentValue)
-        // console.log(currentValue)
-        return acumulator + (10 - index - 1) * currentValue;
-    })
+const validate = (cpf) => {
+    if (!cpf) { return false }
 
-    // console.log('reduce', d1);
-    d1 = 0
-    for (let index = 0; index < str.length -2; index++) {
-        console.log('for', 10 - index, str[index])
-        const digit = parseInt(str[index]);
-        d1 = d1 + ( 10 - index ) * digit;
-    };
-    // console.log('for', d1);
+    cpf = cpf.replace(/[^0-9]/g, '')
+    if (cpf.length != 11) { return false }
+    
+    if (cpf.split("").every(c => c === cpf[0])) { return false }
 
-    const rest1 = (d1*10 % 11);
-    dg1 = (rest1 < 10) ? rest1 : 0;
+    const firstVerifyingDigit = calculateVeryfyingDigit(cpf, 1);
+    if (firstVerifyingDigit != cpf[9]) { return false; }
 
-    const firstVerifyingDigit = str.substring(str.length-2, str.length-1)
-    if (dg1 != firstVerifyingDigit) { return false; }
-
-    for (let index = 0; index < str.length -1; index++) {
-        const digit = parseInt(str[index]);
-        d2 = d2 + ( 11 - index ) * digit;
-    };
-
-    const rest2 = (d2*10 % 11);
-    dg2 = (rest2 < 10) ? rest2 : 0;
-
-    const secondVerifyingDigit = str.substring(str.length-1, str.length)
-    if (dg2 != secondVerifyingDigit) { return false; }
+    const secondVerifyingDigit = calculateVeryfyingDigit(cpf, 2);
+    if (secondVerifyingDigit != cpf[10]) { return false; }
 
     return true;
 }
 
 module.exports = { validate };
-
-validate('12345678012')

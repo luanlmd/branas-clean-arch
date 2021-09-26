@@ -1,4 +1,4 @@
-import { validate } from '../src/cpf'
+import { validate } from '../src/domain/cpf'
 
 test("CPF should be valid", () => {
     const result = validate("935.411.347-80")

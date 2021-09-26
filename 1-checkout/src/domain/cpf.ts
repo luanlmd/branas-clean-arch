@@ -4,24 +4,28 @@ const enum Digit {
 }
 
 const calculateVerifyingDigit = (cpf: string, digit: Digit) => {
-    const multiplierStart = digit
     const calculateUntil = digit -1;
 
-    let accumulatedDigit = 0;
-    let multiplier = multiplierStart;
-    for (let index = 0; index < calculateUntil; index++, multiplier--) {
-        const digit = parseInt(cpf[index]);
-        accumulatedDigit += ( multiplier * digit );
-    }
+    const accumulatedDigit = cpf
+        .substring(0, calculateUntil)
+        .split('')
+        .map(char => parseInt(char))
+        .reduce((accumulator, currentValue, index) => {
+            return accumulator + (calculateUntil - index + 1) * currentValue
+        }, 0)
 
     const rest = ((accumulatedDigit * 10) % 11);
     return (rest < 10) ? rest : 0;
 }
 
+export const sanitize = (cpf: string) => {
+    return cpf.replace(/[^0-9]/g, '')
+}
+
 export const validate = (cpf: string) => {
     if (!cpf) { return false }
 
-    cpf = cpf.replace(/[^0-9]/g, '')
+    cpf = sanitize(cpf);
     if (cpf.length != 11) { return false }
 
     if (cpf.split("").every((c: string) => c === cpf[0])) { return false }

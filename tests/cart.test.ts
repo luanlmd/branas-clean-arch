@@ -9,10 +9,6 @@ let item1: Item;
 let item2: Item;
 let item3: Item;
 
-let cartItem1: CartItem;
-let cartItem2: CartItem;
-let cartItem3: CartItem;
-
 beforeEach(() => { 
     cart = new Cart();
     item1 = new Item(1, 'Item 1', 'Item 1 top', 10)
@@ -29,30 +25,25 @@ test ('Empty cart to show 0 total', () => {
 })
 
 test ('Item count should match added Items', () => {
-    cartItem1 = new CartItem(item1, 1);
-    cartItem2 = new CartItem(item2, 2);
-    cart.addItem(cartItem1);
-    cart.addItem(cartItem2);
+    cart.addItem(new CartItem(item1, 1));
+    cart.addItem(new CartItem(item2, 2));
     expect(cart.getItemCount()).toBe(3)
 })
 
 test ('Total price to be sum of items prices', () => {
-    cartItem1 = new CartItem(item1, 1);
-    cartItem2 = new CartItem(item2, 2);
-    cart.addItem(cartItem1);
-    cart.addItem(cartItem2);
+    cart.addItem(new CartItem(item1, 1));
+    cart.addItem(new CartItem(item2, 2));
     const totalPrice = item1.price + (item2.price*2);
     expect(cart.getTotalPrice()).toBe(totalPrice)
 })
 
 test('Total price to be sum of items prices minus coupom', () => {
-    cartItem1 = new CartItem(item1, 1);
-    cartItem2 = new CartItem(item2, 2);
-    cart.addItem(cartItem1);
-    cart.addItem(cartItem2);
+    cart.addItem(new CartItem(item1, 1));
+    cart.addItem(new CartItem(item2, 2));
+    cart.addItem(new CartItem(item3, 3));
     const coupom = new Coupom('disc10', 10, new Date(Date.now() + ( 3600 * 1000 * 24)))
     cart.applyCoupom(coupom);
-    const totalPrice = item1.price + (item2.price*2);
+    const totalPrice = item1.price + (item2.price*2) + (item3.price*3);
     const finalPrice = totalPrice * ((100 - coupom.discount) / 100)
     expect(cart.getTotalPrice()).toBe(finalPrice)
 })

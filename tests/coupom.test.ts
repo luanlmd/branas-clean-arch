@@ -8,7 +8,6 @@ test ('Coupom should be created', () => {
 
 test('Coupom should be expired', () => {
     const expiredDate = new Date(Date.now() - 1)
-    console.log(expiredDate.getTime() , new Date().getTime())
     const coupom = new Coupom('code', 10, expiredDate)
     expect(coupom.isExpired()).toBeTruthy()
 })

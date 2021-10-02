@@ -3,23 +3,6 @@ const enum Digit {
     SECOND = 10
 }
 
-const calculateVerifyingDigit = (cpf: string, digit: Digit) => {
-    const accumulatedDigit = cpf
-        .substring(0, digit)
-        .split('')
-        .map(char => parseInt(char))
-        .reduce((accumulator, currentValue, index) => {
-            return accumulator + (digit - index + 1) * currentValue
-        }, 0)
-
-    const rest = ((accumulatedDigit * 10) % 11);
-    return (rest < 10) ? rest : 0;
-}
-
-export const sanitize = (cpf: string) => {
-    return cpf.replace(/[^0-9]/g, '')
-}
-
 export const validate = (rawCpf: string) => {
     if (!rawCpf) { return false }
 
@@ -34,4 +17,21 @@ export const validate = (rawCpf: string) => {
     if (secondVerifyingDigit != parseInt(cpf[Digit.SECOND])) { return false; }
 
     return true;
+}
+
+export const sanitize = (cpf: string) => {
+    return cpf.replace(/[^0-9]/g, '')
+}
+
+const calculateVerifyingDigit = (cpf: string, digit: Digit) => {
+    const accumulatedDigit = cpf
+        .substring(0, digit)
+        .split('')
+        .map(char => parseInt(char))
+        .reduce((accumulator, currentValue, index) => {
+            return accumulator + (digit - index + 1) * currentValue
+        }, 0)
+
+    const rest = ((accumulatedDigit * 10) % 11);
+    return (rest < 10) ? rest : 0;
 }

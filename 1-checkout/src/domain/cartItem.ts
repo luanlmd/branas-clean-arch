@@ -2,15 +2,15 @@ import { IClient } from "./client";
 import { Coupom, ICoupom } from "./coupom";
 import { IItem, Item } from "./item";
 
-export interface ICart {
+export interface ICartItem {
     items: IItem[]
-    coupom: ICoupom | undefined
+    coupom: ICoupom
 }
 
-export class Cart {
-    private items: IItem[] = []
-    private coupom?: ICoupom;
-    private cpf?: string;
+export class CartItem {
+    private item: IItem;
+    private price: number;
+    private quantity: number;
 
     addItem(id: number) {
         const item = Item.getById(id)

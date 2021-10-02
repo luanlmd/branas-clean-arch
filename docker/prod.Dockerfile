@@ -13,7 +13,7 @@ RUN set -x \
   && yarn build
 
 RUN set -x \
-  && yarn test
+  && yarn test --coverage
 
 RUN set -x \
   && yarn install --production --force
@@ -21,7 +21,6 @@ RUN set -x \
 FROM node:14-alpine
 
 COPY --from=0 /src/dist /src
-COPY --from=0 /src/.env /src
 COPY --from=0 /src/node_modules /src/node_modules
 COPY --from=0 /src/package.json /src/package.json
 

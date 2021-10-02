@@ -50,9 +50,16 @@ test('Total price to be sum of items prices minus coupom', () => {
     cartItem2 = new CartItem(item2, 2);
     cart.addItem(cartItem1);
     cart.addItem(cartItem2);
-    const coupom = new Coupom('disc10', 10)
+    const coupom = new Coupom('disc10', 10, new Date(Date.now() + ( 3600 * 1000 * 24)))
     cart.applyCoupom(coupom);
     const totalPrice = item1.price + (item2.price*2);
     const finalPrice = totalPrice * ((100 - coupom.discount) / 100)
     expect(cart.getTotalPrice()).toBe(finalPrice)
+})
+
+test('Should not apply expired coupom', () => {
+    const expiredCoupom = new Coupom('mrExpired', 99, new Date(Date.now() - 1));
+    expect (() => {
+        cart.applyCoupom(expiredCoupom);
+    }).toThrowError('Coupom expired');
 })

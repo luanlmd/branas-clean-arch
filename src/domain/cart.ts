@@ -21,6 +21,9 @@ export class Cart {
     }
 
     applyCoupom(coupom: ICoupom){
+        if(coupom.isExpired()) {
+            throw new Error('Coupom expired');
+        }
         this.coupom = coupom;
     }
 

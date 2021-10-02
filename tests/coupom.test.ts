@@ -1,6 +1,14 @@
 import { Coupom } from '../src/domain/coupom';
 
 test ('Coupom should be created', () => {
-    const coupom = new Coupom('code', 10)
+    const futureDate = new Date(Date.now() + ( 3600 * 1000 * 24))
+    const coupom = new Coupom('code', 10, futureDate)
     expect(coupom.discount).toBe(10)
+})
+
+test('Coupom should be expired', () => {
+    const expiredDate = new Date(Date.now() - 1)
+    console.log(expiredDate.getTime() , new Date().getTime())
+    const coupom = new Coupom('code', 10, expiredDate)
+    expect(coupom.isExpired()).toBeTruthy()
 })

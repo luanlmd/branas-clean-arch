@@ -1,7 +1,5 @@
 import { ICartItem } from "./cartItem";
-import { IClient } from "./client";
 import { Coupom, ICoupom } from "./coupom";
-import { IItem, Item } from "./item";
 
 export interface ICart {
     cartItems: ICartItem[]
@@ -29,11 +27,15 @@ export class Cart {
 
     getTotalPrice() {
         let total = this.cartItems.reduce((acc, cartItem) =>  acc + cartItem.getTotalPrice(), 0)
-
         if (this.coupom) {
             total = total * ((100 - this.coupom.discount) / 100)
         }
-
         return total;
+    }
+
+    getShipmentPrice() {
+        return this.cartItems.reduce((acc, cartItem) => {
+            return acc + (1000 * cartItem.getCubage()) * (cartItem.getDensity()/100)
+        }, 0)
     }
 }

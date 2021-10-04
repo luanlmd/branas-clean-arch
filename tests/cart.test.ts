@@ -11,9 +11,9 @@ let item3: Item;
 
 beforeEach(() => { 
     cart = new Cart();
-    item1 = new Item(1, 'Item 1', 'Item 1 top', 10)
-    item2 = new Item(2, 'Item 2', 'Item 2 marromeno', 15)
-    item3 = new Item(3, 'Item 3', 'Item 3 wow', 3)
+    item1 = new Item(1, 'Camera', 'Item 1 top', 10, 1000, 20, 15, 10)
+    item2 = new Item(2, 'Guitarra', 'Item 2 marromeno', 15, 3000, 100, 30, 10)
+    item3 = new Item(3, 'Geladeira', 'Item 3 wow', 3, 40000, 200, 100, 50)
 })
 
 test ('Empty cart to show 0 items count', () => {
@@ -53,4 +53,26 @@ test('Should not apply expired coupom', () => {
     expect (() => {
         cart.applyCoupom(expiredCoupom);
     }).toThrowError('Coupom expired');
+})
+
+test('Should calculate shipment cost', () => {
+    cart.addItem(new CartItem(item1, 1));
+    expect(cart.getShipmentPrice()).toBe(9.99);
+})
+
+test('Should calculate shipment cost', () => {
+    cart.addItem(new CartItem(item1, 2));
+    expect(cart.getShipmentPrice()).toBe(19.98);
+})
+
+test('Should calculate shipment cost', () => {
+    cart.addItem(new CartItem(item3, 1));
+    expect(cart.getShipmentPrice()).toBe(400);
+})
+
+test('Should calculate shipment cost of multiple items', () => {
+    cart.addItem(new CartItem(item1, 1));
+    cart.addItem(new CartItem(item2, 1));
+    cart.addItem(new CartItem(item3, 1));
+    expect(cart.getShipmentPrice()).toBe(439.99);
 })

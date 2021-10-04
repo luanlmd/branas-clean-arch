@@ -34,8 +34,9 @@ export class Cart {
     }
 
     getShipmentPrice() {
-        return this.cartItems.reduce((acc, cartItem) => {
+        const totalPrice = this.cartItems.reduce((acc, cartItem) => {
             return acc + (1000 * cartItem.getCubage()) * (cartItem.getDensity()/100)
         }, 0)
+        return (totalPrice < 10)? 10 : totalPrice;
     }
 }

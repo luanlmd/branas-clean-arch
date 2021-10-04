@@ -55,9 +55,9 @@ test('Should not apply expired coupom', () => {
     }).toThrowError('Coupom expired');
 })
 
-test('Should calculate shipment cost', () => {
+test('Shipment lass than 10 should be 10', () => {
     cart.addItem(new CartItem(item1, 1));
-    expect(cart.getShipmentPrice()).toBe(9.99);
+    expect(cart.getShipmentPrice()).toBe(10);
 })
 
 test('Should calculate shipment cost', () => {
